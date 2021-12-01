@@ -8,6 +8,7 @@
 
 #include <pcl/segmentation/sac_segmentation.h> //for SACSegmentation
 #include <pcl/filters/extract_indices.h> //for ExtractIndices
+#include <pcl/filters/statistical_outlier_removal.h>
 
 
 // Plane (ground) remover class
@@ -26,6 +27,7 @@ public:
 
     //convert the input into a pcl::PointCloud< pcl::PointXYZ> object
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloudPtr(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PointCloud<pcl::PointXYZ>::Ptr filtered_cloudPtr(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::fromROSMsg(msgIn, *cloudPtr);
 
     // ROS_INFO_STREAM("size cloud before removing groundplane:" << (cloudPtr->width));
@@ -54,8 +56,20 @@ public:
     // ROS_INFO_STREAM("size cloud after removing groundplane:" << (cloudPtr->width));
 
     // pcl::PointCloud<pcl::PointXYZ> segmented_pcl = *cloudPtr;
+
+    // outlier remover
+    pcl::StatisticalOutlierRemoval<pcl::PointXYZ> sor;
+    sor.setInputCloud (cloudPtr);
+    sor.setMeanK (50);
+    sor.setStddevMulThresh (1.0);
+    sor.filter (*filtered_cloudPtr);
+
+
+
+
+
     sensor_msgs::PointCloud2 pcl_msg;
-    pcl::toROSMsg(*cloudPtr, pcl_msg);
+    pcl::toROSMsg(*filtered_cloudPtr, pcl_msg);
    
     //publish message
     pub.publish(pcl_msg);
