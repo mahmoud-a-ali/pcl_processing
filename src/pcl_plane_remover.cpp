@@ -23,7 +23,7 @@ public:
 
   //callback function Executed every time a pointCloud message is recieved
   void raw_pcl_callback(const sensor_msgs::PointCloud2& msgIn){
-    //ROS_INFO("PointCloud2 message recieved by pcl_solution_node");
+    ROS_INFO("PointCloud2 message recieved by pcl_solution_node");
 
     //convert the input into a pcl::PointCloud< pcl::PointXYZ> object
     pcl::PointCloud<pcl::PointXYZ>::Ptr cloudPtr(new pcl::PointCloud<pcl::PointXYZ>);
@@ -73,6 +73,7 @@ public:
    
     //publish message
     pub.publish(pcl_msg);
+    ros::Duration(0.5).sleep();
   }
 
 };
@@ -85,11 +86,12 @@ int main(int argc, char **argv) {
   ros::NodeHandle nh;
 
   //create publisher object
-  ros::Publisher processed_pcl_pub = nh.advertise<sensor_msgs::PointCloud2>("/segmented_pcl", 1000);
+  ros::Publisher processed_pcl_pub = nh.advertise<sensor_msgs::PointCloud2>("/segmented_pcl", 1);
   PclPlaneRemover pclpr(processed_pcl_pub);
 
   //create subscriber object
-  ros::Subscriber sub = nh.subscribe("/mid/points", 1000, &PclPlaneRemover::raw_pcl_callback, &pclpr);
+  // ros::Subscriber sub = nh.subscribe("/mid/points", 1, &PclPlaneRemover::raw_pcl_callback, &pclpr);
+  ros::Subscriber sub = nh.subscribe("/velodyne_points", 1, &PclPlaneRemover::raw_pcl_callback, &pclpr);
 
   ROS_INFO("pcl_solution_node started");
   // let ROS take over
