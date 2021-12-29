@@ -4,6 +4,10 @@ project(pcl_processing)
 ## Compile as C++11, supported in ROS Kinetic and newer
 # add_compile_options(-std=c++11)
 
+
+find_package(Eigen3 REQUIRED)
+
+
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
@@ -13,6 +17,11 @@ find_package(catkin REQUIRED COMPONENTS
   pcl_ros
   roscpp
   sensor_msgs
+
+  message_filters
+  nav_msgs
+
+#   Eigen3
 )
 
 ## System dependencies are found with CMake's conventions
@@ -121,6 +130,7 @@ include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
+  ${Eigen_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
@@ -139,6 +149,8 @@ include_directories(
 add_executable(pcl_plane_remover src/pcl_plane_remover.cpp)
 add_executable(pcl_to_dataset src/pcl_to_dataset.cpp)
 add_executable(pcl_rw_txtfile src/pcl_rw_txtfile.cpp)
+add_executable(pcl_transform src/pcl_transform.cpp)
+add_executable(pcl_pose_time_sync src/pcl_pose_time_sync.cpp)
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -154,6 +166,8 @@ add_executable(pcl_rw_txtfile src/pcl_rw_txtfile.cpp)
 target_link_libraries(pcl_plane_remover ${catkin_LIBRARIES} ${PCL_LIBRARES})
 target_link_libraries(pcl_to_dataset ${catkin_LIBRARIES} ${PCL_LIBRARES})
 target_link_libraries(pcl_rw_txtfile ${catkin_LIBRARIES} ${PCL_LIBRARES})
+target_link_libraries(pcl_transform ${catkin_LIBRARIES} ${PCL_LIBRARES})
+target_link_libraries(pcl_pose_time_sync ${catkin_LIBRARIES} ${PCL_LIBRARES} ${Eigen_LIBRARIES})
 
 #############
 ## Install ##
