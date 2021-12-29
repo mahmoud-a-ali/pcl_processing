@@ -1,0 +1,12 @@
+<launch>
+
+    <arg name="org_topic" default="/mid/points" />
+
+    <node name="pcl_plan_remover" pkg="pcl_processing" type="pcl_plane_remover"  output="screen">
+        <remap from="mid/points" to="$(arg org_topic)" />
+    </node>
+
+
+</launch>
+
+
