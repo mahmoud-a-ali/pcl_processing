@@ -127,7 +127,7 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+include
   ${catkin_INCLUDE_DIRS}
   ${PCL_INCLUDE_DIRS}
   ${Eigen_INCLUDE_DIRS}
@@ -151,6 +151,9 @@ add_executable(pcl_to_dataset src/pcl_to_dataset.cpp)
 add_executable(pcl_rw_txtfile src/pcl_rw_txtfile.cpp)
 add_executable(pcl_transform src/pcl_transform.cpp)
 add_executable(pcl_pose_time_sync src/pcl_pose_time_sync.cpp)
+add_executable(pcl_surface_projection src/pcl_surface_projection.cpp)
+add_executable(occ_n_fr_surface src/occ_n_fr_surface.cpp)
+
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -168,6 +171,8 @@ target_link_libraries(pcl_to_dataset ${catkin_LIBRARIES} ${PCL_LIBRARES})
 target_link_libraries(pcl_rw_txtfile ${catkin_LIBRARIES} ${PCL_LIBRARES})
 target_link_libraries(pcl_transform ${catkin_LIBRARIES} ${PCL_LIBRARES})
 target_link_libraries(pcl_pose_time_sync ${catkin_LIBRARIES} ${PCL_LIBRARES} ${Eigen_LIBRARIES})
+target_link_libraries(pcl_surface_projection ${catkin_LIBRARIES} ${PCL_LIBRARES} ${Eigen_LIBRARIES})
+target_link_libraries(occ_n_fr_surface ${catkin_LIBRARIES} ${PCL_LIBRARES} ${Eigen_LIBRARIES})
 
 #############
 ## Install ##
